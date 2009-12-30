@@ -1,6 +1,6 @@
 Hack Assembler
 
-This is an assember for the Hack computer platform.
+This is an assembler for the Hack computer platform.
 
-This assembler is needed for the book "Elements of Computer Systems: Building
-a Modern Computer from First Principles." by Noam Nisan and Shimon Schocken.
+This assembler is needed for the book "Elements of Computing Systems: 
+Building a Modern Computer from First Principles." by Noam Nisan and Shimon Schocken.
