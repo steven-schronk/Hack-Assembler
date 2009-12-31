@@ -1,9 +1,31 @@
-This is a complete and detailed list of errors for the Hack Assembler.  
+This is a complete and detailed list of errors for the Hack Assembler.
 
 It should provide assistance to the user in the correct and efficient use of the software.
 
 The errors are listed in order. Each error entry contains a detailed explanation of the error as well as optional tips for reducing or eliminating its occurrence.
 
+1: Assembler does not have a file to assemble.
+	Retry command with a filename as an argument.
 
-1: Assembler does not have a file to assemble.  Retry command with a filename as an argument.
-2: Assembler may only work on one file at a time in this version.  Retry command with only one argument.
+2: Assembler may only work on one file at a time in this version.
+	Retry command with only one argument.
+
+3: Cannot Open Input (Source) File. 
+	There are several factors that can cause this error:
+		A. File does not exist on system.
+		B. Your account does not have permission to open file.
+		C. File locked by either the operating system or another program.
+
+4: Input Too Large for Input Buffer.
+	This assembler has a maximum filesize that can be read.
+	This filesize is probably large enough for even a very complex assembly program.
+	If this buffer is found to be too small, it can be adjusted in the source and recompiled.
+
+5: Filename Extension Not Correct.
+	Assembler only accepts file extension "asm".  Uppercase letters will not work.
+
+6: Cannot Open Output (Destination) File.
+	There are several factors that can cause this error:
+		A. File already exists but your account does not have permission to overwrite it.
+		B. Your account does not have permission to create file at this location.
+		C. File already exists but but is locked by either the operating system or another program.	
