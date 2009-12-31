@@ -28,4 +28,4 @@ The errors are listed in order. Each error entry contains a detailed explanation
 	There are several factors that can cause this error:
 		A. File already exists but your account does not have permission to overwrite it.
 		B. Your account does not have permission to create file at this location.
-		C. File already exists but but is locked by either the operating system or another program.	
+		C. File already exists but but is locked by either the operating system or another program.
