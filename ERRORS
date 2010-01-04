@@ -29,3 +29,8 @@ The errors are listed in order. Each error entry contains a detailed explanation
 		A. File already exists but your account does not have permission to overwrite it.
 		B. Your account does not have permission to create file at this location.
 		C. File already exists but but is locked by either the operating system or another program.
+
+7: Incorrect Command Type.
+	Command at this line has not been observed as a valid command type.
+	This usually happens when the syntax for the file is incorrect.
+	See documentation for correct syntax for this assembly language.

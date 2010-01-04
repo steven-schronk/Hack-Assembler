@@ -1,3 +1,7 @@
+#include "parse.c"
+
+
+
 /*
 * A_COMMAND: @value
 *	value is either a non-negative decimal numer of a symbol referring to such a number
@@ -27,7 +31,7 @@ void advance();
 * Returns type of current command
 * See Commands comment for more info
 */
-command_type();
+int command_type();
 
 /*
 * Returns symbol or decimal of current command
