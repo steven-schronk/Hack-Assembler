@@ -17,6 +17,7 @@ char InBuff[MAXINBUFF];
 char FilenameBuff[80];
 
 char *current_command = InBuff;
+int current_command_type;
 
 void dump_buffer(const char *buffer)
 {
@@ -71,6 +72,18 @@ int find_line_num()
 	return i;
 }
 
+void print_current_command()
+{
+	int i = 0;
+	printf("CURRENT COMMAND: ");
+	while(*(current_command+i) != '\n' && i <= 20)
+	{
+		printf("%c", *(current_command+i));
+		++i;
+	}
+	printf("\n");
+}
+
 int has_more_commands()
 {
 	if(*current_command == '\0') { return 0; }
@@ -97,10 +110,13 @@ int command_type()
 {
 	if(*current_command == '@')
 	{
+		current_command_type = A_COMMAND;
 		return A_COMMAND;
 	} else if(*current_command == '(') {
+		current_command_type = L_COMMAND;
 		return L_COMMAND;
 	} else if(!isdigit(*current_command)){
+		current_command_type = C_COMMAND;
 		return C_COMMAND;
 	}
 
@@ -110,18 +126,23 @@ int command_type()
 	return -1;
 }
 
-void print_current_command()
+char *symbol()
 {
-	int i = 0;
-	printf("CURRENT COMMAND: ");
-	while(*(current_command+i) != '\n' && i <= 20)
-	{
-		printf("%c", *(current_command+i));
-		++i;
-	}
-	printf("\n");
-}
+	int i = 1;
+	char *symbol[MAXCOMMAND];
+	/* TODO: Verify that symbol syntax is OK */
 
+	if(current_command_type == A_COMMAND || current_command_type == L_COMMAND)
+	{
+		while(*(current_command+i) != '\n' || *(current_command+i) != ')')
+		{
+			symbol[i-1] = *(current_command+i);
+		}
+		return symbol;
+	}
+	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
+	return symbol;
+}
 
 /*
 * END LINES TO BE MOVED

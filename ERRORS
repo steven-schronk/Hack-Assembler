@@ -34,3 +34,7 @@ The errors are listed in order. Each error entry contains a detailed explanation
 	Command at this line has not been observed as a valid command type.
 	This usually happens when the syntax for the file is incorrect.
 	See documentation for correct syntax for this assembly language.
+
+8: Symbol Function Called on Incorrect Command Type.
+	Internal function named Symbol has been called to decode a command type that the function
+	is not able to work with.
