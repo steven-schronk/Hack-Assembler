@@ -1,6 +1,6 @@
-#include "parse.c"
 
-
+#define MAXCOMMAND 100
+#define MAXINBUFF 10000
 
 /*
 * A_COMMAND: @value
@@ -14,6 +14,17 @@
 #define A_COMMAND 0
 #define C_COMMAND 1
 #define L_COMMAND 2
+
+void dump_buffer();
+void init_parser(char *FilenameBuff);
+
+/*
+* Finds current line number of source file.
+* This is done for the convenience of the user.
+*/
+int find_line_num();
+
+void print_current_command();
 
 /*
 * Confirms the existance of more commands in the input
