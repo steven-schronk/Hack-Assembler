@@ -8,8 +8,10 @@
 void exit_error(const int err_num, const char *err_msg)
 {
 	fprintf(stderr, "ERROR %d: %s\n", err_num, err_msg);
-	//if(pInfile != NULL) { fclose(pInfile); }
-	//if(pOutfile != NULL) { fclose(pOutfile); }
+	/*
+	if(pInfile != NULL) { fclose(pInfile); }
+	if(pOutfile != NULL) { fclose(pOutfile); }
+	*/
 	exit(EXIT_FAILURE);
 }
 

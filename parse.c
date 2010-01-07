@@ -43,19 +43,19 @@ int find_line_num()
 void print_current_command()
 {
 	int i = 0;
-	printf("CURRENT COMMAND: ");
+	printf("CURRENT COMMAND: ->");
 	while(*(current_command+i) != '\n' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
 		++i;
 	}
-	printf("\n");
+	printf("<-\n");
 }
 
 void init_parser(char *FilenameBuff)
 {
-	//if((pOutfile = fopen(FilenameBuff, "w")) == NULL)
-		//exit_error(6, "Cannot Open Output (Destination) File");
+	/*if((pOutfile = fopen(FilenameBuff, "w")) == NULL)
+		exit_error(6, "Cannot Open Output (Destination) File"); */
 
 	if((pInfile = fopen(FilenameBuff, "rb")) == NULL)
 		exit_error(3, "Cannot Open Input (Source) File");
@@ -109,12 +109,12 @@ int command_type()
 	} else if(!isdigit(*current_command)){
 		current_command_type = C_COMMAND;
 		return C_COMMAND;
+	} else {
+		int i = find_line_num();
+		line_notification(i);
+		exit_error(7, "Incorrect Command Type");
+		return -1;
 	}
-
-	int i = find_line_num();
-	line_notification(i);
-	exit_error(7, "Incorrect Command Type");
-	return -1;
 }
 
 char *symbol()
