@@ -43,13 +43,13 @@ int find_line_num()
 void print_current_command()
 {
 	int i = 0;
-	printf("CURRENT COMMAND: ->");
+	printf("CURRENT COMMAND: ");
 	while(*(current_command+i) != '\n' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
 		++i;
 	}
-	printf("<-\n");
+	printf("\n");
 }
 
 void init_parser(char *FilenameBuff)
@@ -77,24 +77,23 @@ void init_parser(char *FilenameBuff)
 
 int has_more_commands()
 {
-	if(*current_command == '\0') { return 0; }
+	int i = 0;
+	while(*(current_command+i) != '\0' && *(current_command+i) != '\n') { ++i; }
+	if(*(current_command+i) == '\0') { return 0; }
 	return 1;
 }
 
 void advance()
 {
-	while(*current_command != '\n') /* move to end of current command */
+	do {
+		++current_command;
+	} while(*current_command != '\n' && *current_command != '\0');
+	while(isspace(*current_command)) { ++current_command; }
+	if(*(current_command+1) == '/')
 	{
 		++current_command;
-	}
-
-	if(*(current_command+1) == '/') /* ignore comments */
-	{
-		current_command++;
 		advance();
 	}
-
-	while(isspace(*current_command)) { ++current_command; } /* skip whitespace */
 }
 
 int command_type()
@@ -119,18 +118,40 @@ int command_type()
 
 char *symbol()
 {
-	int i = 1;
-	char *symbol[MAXCOMMAND];
+	int i = 0;
+	char symbol[MAXCOMMAND];
+	char *psymbol = symbol;
 	/* TODO: Verify that symbol syntax is OK */
 
 	if(current_command_type == A_COMMAND || current_command_type == L_COMMAND)
 	{
 		while(*(current_command+i) != '\n' || *(current_command+i) != ')')
 		{
-			*symbol[i-1] = *(current_command+i);
+			symbol[i] = *(current_command+i);
 		}
-		return *symbol;
+		return psymbol;
 	}
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return *symbol;
+	return psymbol;
+}
+
+char *dest()
+{
+	int i = 0;
+	char dest[4];
+	char *pdest = dest;
+	/* TODO: Verify that symbol syntax is OK */
+
+	if(current_command_type == C_COMMAND)
+	{
+		while(*(current_command+i) != '=')
+		{
+			dest[i] = *(current_command+i);
+			++i;
+		}
+		dest[i] = '\0';
+		return pdest;
+	}
+	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
+	return pdest;
 }

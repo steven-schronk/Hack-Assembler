@@ -38,16 +38,23 @@ int main(int argc, char *argv[])
 
 	/* TODO: verify output buffer has not been overflowed */
 
-	advance(); /* find first command */
-
-	/*dump_buffer(); */
-
 	while(has_more_commands())
 	{
 		advance();
+		printf("TYPE: %d ", command_type());
 		print_current_command();
-		printf("TYPE: %d\n", command_type());
-	}
 
+		if(command_type() == C_COMMAND)
+		{
+			printf("Destination: ");
+			char *destination = dest();
+			while(*destination != '\0')
+			{
+				printf("%c", *destination++);
+			}
+			printf("\n");
+		}
+			/* TODO: Add comp and jump here when implemented */
+	}
 	return 0;
 }
