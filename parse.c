@@ -108,6 +108,9 @@ int command_type()
 	} else if(!isdigit(*current_command)){
 		current_command_type = C_COMMAND;
 		return C_COMMAND;
+	} else if(isdigit(*current_command)){
+		current_command_type = C_COMMAND;
+		return C_COMMAND;
 	} else {
 		int i = find_line_num();
 		line_notification(i);
@@ -121,7 +124,6 @@ char *symbol()
 	int i = 0;
 	char symbol[MAXCOMMAND];
 	char *psymbol = symbol;
-	/* TODO: Verify that symbol syntax is OK */
 
 	if(current_command_type == A_COMMAND || current_command_type == L_COMMAND)
 	{
@@ -129,6 +131,7 @@ char *symbol()
 		{
 			symbol[i] = *(current_command+i);
 		}
+		symbol[i++] = '\0';
 		return psymbol;
 	}
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
@@ -138,9 +141,13 @@ char *symbol()
 char *dest()
 {
 	int i = 0;
-	char dest[4];
+	char dest[MAXCOMMAND];
 	char *pdest = dest;
 	/* TODO: Verify that symbol syntax is OK */
+
+	char *delimiter = strchr(current_command, '=');
+
+	if(delimiter == NULL) { return NULL; }
 
 	if(current_command_type == C_COMMAND)
 	{
@@ -152,6 +159,45 @@ char *dest()
 		dest[i] = '\0';
 		return pdest;
 	}
+	i = find_line_num();
+	line_notification(i);
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return pdest;
+	return NULL;
+}
+
+char *comp()
+{
+	int i = 0;
+	char comp[MAXCOMMAND];
+	char *pcomp = comp;
+	char *delimiter = NULL;
+	if(current_command_type == C_COMMAND)
+	{
+		/* Look for an '=' in this command */
+		delimiter = strchr(current_command, '=');
+		if(delimiter != NULL) /* found '=' in command */
+		{
+			/* printf("Command with equals\n"); */
+			++delimiter;
+			while(*(delimiter+i) != '\n' && *(delimiter+i) != '\0')
+			{
+				comp[i] = *(delimiter+i);
+				++i;
+			}
+		} else {
+			i = 0;
+			/* printf("Command with semicolon\n"); */
+			while(*(current_command+i) != ';')
+			{
+				comp[i] = *(current_command+i);
+				++i;
+			}
+		}
+		comp[i] = '\0';
+		return pcomp;
+	}
+	i = find_line_num();
+	line_notification(i);
+	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
+	return NULL;
 }

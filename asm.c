@@ -46,15 +46,30 @@ int main(int argc, char *argv[])
 
 		if(command_type() == C_COMMAND)
 		{
-			printf("Destination: ");
 			char *destination = dest();
-			while(*destination != '\0')
+			if(destination != NULL)
 			{
-				printf("%c", *destination++);
+				printf("DEST: ");
+				while(*destination != '\0')
+				{
+					printf("%c", *destination++);
+				}
+				printf(" ");
 			}
-			printf("\n");
+
+			char *comparison = comp();
+			if(comparison != NULL)
+			{
+				printf("COMP: ");
+				while(*comparison != '\0')
+				{
+					printf("%c", *comparison++);
+				}
+				printf(" ");
+			}
 		}
-			/* TODO: Add comp and jump here when implemented */
+		printf("\n");
+		/* TODO: Add comp and jump here when implemented */
 	}
 	return 0;
 }
