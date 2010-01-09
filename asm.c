@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 	char FilenameBuff[80];
 	register int i = 0;
 
-	if(argc != 2) { exit_error(1, "No Input Files"); }
+	if(argc != 2) { exit_error(1, "No Input Files."); }
 	/* TODO: future versions will accept more than one file */
-	if(argc > 2) { exit_error(2, "Too Many Files Listed"); }
+	if(argc > 2) { exit_error(2, "Too Many Files Listed."); }
 
 	strcpy(FilenameBuff, argv[1]);
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	i = strlen(argv[1]) - 1;
 	if(	(argv[1][i-2] != 'a') ||
 		(argv[1][i-1] != 's') ||
-		(argv[1][i]   != 'm' ) ) { exit_error(5, "Filename Extension Not Correct"); }
+		(argv[1][i]   != 'm' ) ) { exit_error(5, "Filename Extension Not Correct."); }
 
 	init_parser(argv[1]);
 

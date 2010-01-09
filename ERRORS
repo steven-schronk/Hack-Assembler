@@ -4,13 +4,15 @@ It should provide assistance to the user in the correct and efficient use of the
 
 The errors are listed in order. Each error entry contains a detailed explanation of the error as well as optional tips for reducing or eliminating its occurrence.
 
-1: Assembler does not have a file to assemble.
+1: No Input Files.
+	Assembler does not have a file to assemble.
 	Retry command with a filename as an argument.
 
-2: Assembler may only work on one file at a time in this version.
+2: Too Many Files Listed.
+	Assembler may only work on one file at a time in this version.
 	Retry command with only one argument.
 
-3: Cannot Open Input (Source) File. 
+3: Cannot Open Input (Source) File.
 	There are several factors that can cause this error:
 		A. File does not exist on system.
 		B. Your account does not have permission to open file.
@@ -38,3 +40,7 @@ The errors are listed in order. Each error entry contains a detailed explanation
 8: Symbol Function Called on Incorrect Command Type.
 	Internal function named Symbol has been called to decode a command type that the function
 	is not able to work with.
+
+9: Command Does Not Contain Proper Delimiter.
+	Command parsed at this line should contain either a ';' or an '='.
+	Parser did not find either operator and exited.
