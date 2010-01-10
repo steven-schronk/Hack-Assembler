@@ -154,7 +154,7 @@ char *dest()
 		while(*(current_command+i) != '=')
 		{
 			dest[i] = *(current_command+i);
-			++i;
+			i++;
 		}
 		dest[i] = '\0';
 		return pdest;
@@ -179,10 +179,11 @@ char *comp()
 		{
 			/* printf("Command with equals\n"); */
 			++delimiter;
-			while(*(delimiter+i) != '\n' && *(delimiter+i) != '\0')
+			/* while(!isspace(*(delimiter+1)) && *(delimiter+i) != '\0') */
+			while(!isspace(*(delimiter+i)) && *(delimiter+i) != '\0')
 			{
 				comp[i] = *(delimiter+i);
-				++i;
+				i++;
 			}
 		} else {
 			i = 0;
@@ -190,11 +191,49 @@ char *comp()
 			while(*(current_command+i) != ';')
 			{
 				comp[i] = *(current_command+i);
-				++i;
+				i++;
 			}
 		}
 		comp[i] = '\0';
 		return pcomp;
+	}
+	i = find_line_num();
+	line_notification(i);
+	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
+	return NULL;
+}
+
+char *jump()
+{
+	int i = 0;
+	char jump[MAXCOMMAND];
+	char *pjump = jump;
+	char *delimiter = NULL;
+	int valid_command = 0;
+	if(current_command_type == C_COMMAND)
+	{
+		/* Test for semicolon before newline char */
+		i = 0;
+		while(*(current_command+i) != '\n' && *(current_command+i) != '\0')
+		{
+			if(*(current_command+i) == ';') { ++valid_command; }
+			++i;
+		}
+		if(valid_command == 0) { return NULL; } /* no jump in command */
+		delimiter = strchr(current_command, ';');
+		if(delimiter != NULL) /* found ';' in command */
+		{
+			++delimiter;
+			while(!isspace(*(delimiter+1)) && *(delimiter+i) != '\0')
+			{
+				jump[i] = *(delimiter+i);
+				++i;
+			}
+			jump[i] = '\0';
+			return pjump;
+		} else {
+			return NULL;
+		}
 	}
 	i = find_line_num();
 	line_notification(i);

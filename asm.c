@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 
 		if(command_type() == C_COMMAND)
 		{
+
 			char *destination = dest();
 			if(destination != NULL)
 			{
@@ -67,6 +68,18 @@ int main(int argc, char *argv[])
 				}
 				printf(" ");
 			}
+
+			char *jumpsymbol = jump();
+			if(jumpsymbol != NULL)
+			{
+				printf(" JUMP: ");
+				while(*jumpsymbol != '\0')
+				{
+					printf("%c", *jumpsymbol++);
+				}
+				printf(" ");
+			}
+
 		}
 		printf("\n");
 		/* TODO: Add comp and jump here when implemented */
