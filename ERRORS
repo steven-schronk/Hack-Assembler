@@ -44,3 +44,13 @@ The errors are listed in order. Each error entry contains a detailed explanation
 9: Command Does Not Contain Proper Delimiter.
 	Command parsed at this line should contain either a ';' or an '='.
 	Parser did not find either operator and exited.
+
+10: Symbol Not Found In Dest Lookup Table.
+	Code generator could not find appropriate output based on command input.
+	Accepted command input values include:
+		null, M, D, MD, A, AM, AD, AMD
+
+11: Symbol Not Found In Jump Lookup Table.
+	Code generator could not find appropriate output based on command input.
+	Accepted command input values include:
+		null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP

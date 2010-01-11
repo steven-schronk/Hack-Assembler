@@ -143,9 +143,10 @@ char *dest()
 	int i = 0;
 	char dest[MAXCOMMAND];
 	char *pdest = dest;
+	char *delimiter = NULL;
 	/* TODO: Verify that symbol syntax is OK */
 
-	char *delimiter = strchr(current_command, '=');
+	delimiter = strchr(current_command, '=');
 
 	if(delimiter == NULL) { return NULL; }
 
@@ -177,9 +178,7 @@ char *comp()
 		delimiter = strchr(current_command, '=');
 		if(delimiter != NULL) /* found '=' in command */
 		{
-			/* printf("Command with equals\n"); */
 			++delimiter;
-			/* while(!isspace(*(delimiter+1)) && *(delimiter+i) != '\0') */
 			while(!isspace(*(delimiter+i)) && *(delimiter+i) != '\0')
 			{
 				comp[i] = *(delimiter+i);
@@ -187,7 +186,6 @@ char *comp()
 			}
 		} else {
 			i = 0;
-			/* printf("Command with semicolon\n"); */
 			while(*(current_command+i) != ';')
 			{
 				comp[i] = *(current_command+i);
@@ -221,19 +219,15 @@ char *jump()
 		}
 		if(valid_command == 0) { return NULL; } /* no jump in command */
 		delimiter = strchr(current_command, ';');
-		if(delimiter != NULL) /* found ';' in command */
+		++delimiter;
+		i = 0;
+		while(!isspace(*(delimiter+i)) && *(delimiter+i) != '\0')
 		{
-			++delimiter;
-			while(!isspace(*(delimiter+1)) && *(delimiter+i) != '\0')
-			{
-				jump[i] = *(delimiter+i);
-				++i;
-			}
-			jump[i] = '\0';
-			return pjump;
-		} else {
-			return NULL;
+			jump[i] = *(delimiter+i);
+			++i;
 		}
+		jump[i] = '\0';
+		return pjump;
 	}
 	i = find_line_num();
 	line_notification(i);
