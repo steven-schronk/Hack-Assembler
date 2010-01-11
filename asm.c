@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
 
 	init_coder(FilenameBuff);
 
-
 	/* TODO: verify output buffer has not been overflowed */
 
 	while(has_more_commands())
@@ -54,43 +53,43 @@ int main(int argc, char *argv[])
 			char *destination = dest();
 			if(destination != NULL)
 			{
-				enc_dest(destination);
-				/*
+				/* enc_dest(destination); */
+
 				printf("DEST: ");
 				while(*destination != '\0')
 				{
 					printf("%c", *destination++);
 				}
 				printf(" ");
-				*/
+
 			}
 
 			char *comparison = comp();
 			if(comparison != NULL)
 			{
 				/*enc_comp(comparison);*/
-				/*
+
 				printf("COMP: ");
 				while(*comparison != '\0')
 				{
 					printf("%c", *comparison++);
 				}
 				printf(" ");
-				*/
+
 			}
 
 			char *jumpsymbol = jump();
 			if(jumpsymbol != NULL)
 			{
-				enc_jump(jumpsymbol);
-				/*
-				printf(" JUMP: ");
+				/* enc_jump(jumpsymbol); */
+
+				printf("JUMP: ");
 				while(*jumpsymbol != '\0')
 				{
 					printf("%c", *jumpsymbol++);
 				}
 				printf(" ");
-				*/
+
 			}
 		}
 		printf("\n");

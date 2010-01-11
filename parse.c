@@ -143,15 +143,19 @@ char *dest()
 	int i = 0;
 	char dest[MAXCOMMAND];
 	char *pdest = dest;
-	char *delimiter = NULL;
+	int dest_exist = 0;
 	/* TODO: Verify that symbol syntax is OK */
-
-	delimiter = strchr(current_command, '=');
-
-	if(delimiter == NULL) { return NULL; }
 
 	if(current_command_type == C_COMMAND)
 	{
+		while(*(current_command+i) != '\n' && *(current_command+i) != '\0')
+		{
+			if(*(current_command+i) == '=') { ++dest_exist; }
+			++i;
+		}
+		if(dest_exist == 0) { return NULL; } /* no dest in command */
+
+		i = 0;
 		while(*(current_command+i) != '=')
 		{
 			dest[i] = *(current_command+i);
@@ -169,22 +173,39 @@ char *dest()
 char *comp()
 {
 	int i = 0;
+	int eq_exist = 0;
+	int semi_exist = 0;
 	char comp[MAXCOMMAND];
 	char *pcomp = comp;
 	char *delimiter = NULL;
+
+	/* Verify that a ';' or an '=' exists in this command -- exit otherwise */
+	while(*(current_command+i) != '\n' && *(current_command+i) != '\0')
+	{
+		if(*(current_command+i) == '=') { ++eq_exist; delimiter = current_command+i; }
+		if(*(current_command+i) == ';') { ++semi_exist; }
+		++i;
+	}
+
+	if(!semi_exist && !eq_exist)
+	{
+		line_notification(i);
+		exit_error(9, "Command Does Not Contain Proper Delimiter.");
+		return NULL;
+	}
+
 	if(current_command_type == C_COMMAND)
 	{
-		/* Look for an '=' in this command */
-		delimiter = strchr(current_command, '=');
-		if(delimiter != NULL) /* found '=' in command */
+		if(eq_exist) /* found '=' in command -- skip to char after equal and copy till new line */
 		{
+			i = 0;
 			++delimiter;
-			while(!isspace(*(delimiter+i)) && *(delimiter+i) != '\0')
+			while(*(delimiter+i) != ';' && !isspace(*(delimiter+i)) && *(delimiter+i) != '\0')
 			{
 				comp[i] = *(delimiter+i);
 				i++;
 			}
-		} else {
+		} else { /* no '=' in command -- copy until semicolon found */
 			i = 0;
 			while(*(current_command+i) != ';')
 			{

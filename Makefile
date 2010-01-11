@@ -1,7 +1,7 @@
 CC=gcc
 
-CFLAGS_REL=-Wall -ansi -O2
-CFLAGS_DBG=-Wall -ansi -DDEBUG -g -O2
+CFLAGS_REL=-Wall -ansi -O0
+CFLAGS_DBG=-Wall -ansi -DDEBUG -g -O0
 CFLAGS_SML=-Wall -ansi -Os
 
 OBJS=asm.c error.c parse.c code.c
