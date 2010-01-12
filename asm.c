@@ -53,43 +53,43 @@ int main(int argc, char *argv[])
 			char *destination = dest();
 			if(destination != NULL)
 			{
-				/* enc_dest(destination); */
-
+				enc_dest(destination);
+				/*
 				printf("DEST: ");
 				while(*destination != '\0')
 				{
 					printf("%c", *destination++);
 				}
 				printf(" ");
-
+				*/
 			}
 
 			char *comparison = comp();
 			if(comparison != NULL)
 			{
-				/*enc_comp(comparison);*/
-
+				enc_comp(comparison);
+				/*
 				printf("COMP: ");
 				while(*comparison != '\0')
 				{
 					printf("%c", *comparison++);
 				}
 				printf(" ");
-
+				*/
 			}
 
 			char *jumpsymbol = jump();
 			if(jumpsymbol != NULL)
 			{
-				/* enc_jump(jumpsymbol); */
-
+				enc_jump(jumpsymbol);
+				/*
 				printf("JUMP: ");
 				while(*jumpsymbol != '\0')
 				{
 					printf("%c", *jumpsymbol++);
 				}
 				printf(" ");
-
+				*/
 			}
 		}
 		printf("\n");

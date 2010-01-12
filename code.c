@@ -6,36 +6,41 @@
 #include "error.h"
 #include "parse.h"
 
-int init_coder(char *filename)
+int init_coder(const char *filename)
 {
 	return 0;
 }
 
-int enc_dest(char *mnemonic)
+int enc_dest(const char *mnemonic)
 {
+	char command[MAXCOMMAND];
+	char *pcommand = command;
+
+	strcpy(pcommand, mnemonic);
+
 	if(strcmp(mnemonic, "") == 0) {
-		printf("000");
+		printf("D000");
 		return 1;
 	} else if (strcmp(mnemonic, "M") == 0) {
-		printf("001");
+		printf("D001");
 		return 1;
 	} else if(strcmp(mnemonic, "D") == 0) {
-		printf("010");
+		printf("D010");
 		return 1;
 	} else if(strcmp(mnemonic, "MD") == 0) {
-		printf("011");
+		printf("D011");
 		return 1;
 	} else if(strcmp(mnemonic, "A") == 0) {
-		printf("100");
+		printf("D100");
 		return 1;
 	} else if(strcmp(mnemonic, "AM") == 0) {
-		printf("101");
+		printf("D101");
 		return 1;
 	} else if(strcmp(mnemonic, "AD") == 0) {
-		printf("110");
+		printf("D110");
 		return 1;
 	} else if(strcmp(mnemonic, "AMD") == 0) {
-		printf("111");
+		printf("D111");
 		return 1;
 	} else {
 		int i = find_line_num();
@@ -45,39 +50,41 @@ int enc_dest(char *mnemonic)
 	return 0;
 }
 
-int enc_comp(char *mnemonic)
+int enc_comp(const char *mnemonic)
 {
 	return 0;
 }
 
-int enc_jump(char *mnemonic)
+int enc_jump(const char *mnemonic)
 {
-	if(strcmp(mnemonic, "") == 0) {
-		printf("000");
+	char command[MAXCOMMAND];
+	char *pcommand = command;
+
+	strcpy(pcommand, mnemonic);
+
+	if(strcmp(pcommand, "") == 0) {
+		printf("J000");
 		return 1;
-	} else if(strcmp(mnemonic, "JGT") == 0) {
+	} else if(strcmp(pcommand, "JGT") == 0) {
 		printf("001");
 		return 1;
-	} else if(strcmp(mnemonic, "JEQ") == 0) {
+	} else if(strcmp(pcommand, "JEQ") == 0) {
 		printf("010");
 		return 1;
-	} else if(strcmp(mnemonic, "JGE") == 0) {
+	} else if(strcmp(pcommand, "JGE") == 0) {
 		printf("011");
 		return 1;
-	} else if(strcmp(mnemonic, "JEQ") == 0) {
-		printf("010");
-		return 1;
-	} else if(strcmp(mnemonic, "JLT") == 0) {
+	} else if(strcmp(pcommand, "JLT") == 0) {
 		printf("100");
 		return 1;
-	} else if(strcmp(mnemonic, "JNE") == 0) {
-		printf("101");
+	} else if(strcmp(pcommand, "JNE") == 0) {
+		printf("J101");
 		return 1;
-	} else if(strcmp(mnemonic, "JLE") == 0) {
-		printf("110");
+	} else if(strcmp(pcommand, "JLE") == 0) {
+		printf("J110");
 		return 1;
-	} else if(strcmp(mnemonic, "JMP") == 0) {
-		printf("111");
+	} else if(strcmp(pcommand, "JMP") == 0) {
+		printf("J111");
 		return 1;
 	} else {
 		int i = find_line_num();
