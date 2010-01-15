@@ -40,11 +40,23 @@ int find_line_num()
 	return i;
 }
 
+int search_command(const char *current_command, const char term)
+{
+	int i = 0;
+	int found = 0;
+	while(*(current_command+i) != '\r' && *(current_command+i) != '\n' && *(current_command+i) != '\0')
+	{
+		if(*(current_command+i) == term) { ++found; }
+		++i;
+	}
+	return found;
+}
+
 void print_current_command()
 {
 	int i = 0;
 	printf("CURRENT COMMAND: ");
-	while(*(current_command+i) != '\n' && i <= 20)
+	while(*(current_command+i) != '\r' && *(current_command+i) != '\n' && *(current_command+i) != '\0' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
 		++i;
@@ -102,7 +114,7 @@ int command_type()
 	{
 		current_command_type = A_COMMAND;
 		return A_COMMAND;
-	} else if(*current_command == '(') {
+	} else if(search_command(current_command, '(') > 0 || search_command(current_command, ')') > 0) {
 		current_command_type = L_COMMAND;
 		return L_COMMAND;
 	} else if(!isdigit(*current_command)){
@@ -119,32 +131,39 @@ int command_type()
 	}
 }
 
-char *symbol()
+int symbol(char sym[])
 {
 	int i = 0;
-	char symbol[MAXCOMMAND];
-	char *psymbol = symbol;
 
-	if(current_command_type == A_COMMAND || current_command_type == L_COMMAND)
+	if(current_command_type == A_COMMAND)
 	{
-		while(*(current_command+i) != '\n' || *(current_command+i) != ')')
+		while(!isspace(*(current_command+i+1)))
 		{
-			symbol[i] = *(current_command+i);
+			sym[i] = *(current_command+i+1);
+			++i;
 		}
-		symbol[i++] = '\0';
-		return psymbol;
+		sym[i++] = '\0';
+		return 1;
+	}
+
+	if(current_command_type == L_COMMAND)
+	{
+		while(!isspace(*(current_command+i+1)) && *(current_command+i+1) != ')')
+		{
+			sym[i] = *(current_command+i+1);
+			++i;
+		}
+		sym[i++] = '\0';
+		return 1;
 	}
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return psymbol;
+	return 0;
 }
 
-char *dest()
+int dest(char dest[])
 {
 	int i = 0;
-	char dest[MAXCOMMAND];
-	char *pdest = dest;
 	int dest_exist = 0;
-	/* TODO: Verify that symbol syntax is OK */
 
 	if(current_command_type == C_COMMAND)
 	{
@@ -153,7 +172,7 @@ char *dest()
 			if(*(current_command+i) == '=') { ++dest_exist; }
 			++i;
 		}
-		if(dest_exist == 0) { return NULL; } /* no dest in command */
+		if(dest_exist == 0) { return 0; } /* no dest in command */
 
 		i = 0;
 		while(*(current_command+i) != '=')
@@ -162,24 +181,21 @@ char *dest()
 			i++;
 		}
 		dest[i] = '\0';
-		return pdest;
+		return 1;
 	}
 	i = find_line_num();
 	line_notification(i);
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return NULL;
+	return 0;
 }
 
-char *comp()
+int comp(char comp[])
 {
 	int i = 0;
 	int eq_exist = 0;
 	int semi_exist = 0;
-	char comp[MAXCOMMAND];
-	char *pcomp = comp;
 	char *delimiter = NULL;
 
-	/* Verify that a ';' or an '=' exists in this command -- exit otherwise */
 	while(*(current_command+i) != '\n' && *(current_command+i) != '\0')
 	{
 		if(*(current_command+i) == '=') { ++eq_exist; delimiter = current_command+i; }
@@ -191,7 +207,7 @@ char *comp()
 	{
 		line_notification(i);
 		exit_error(9, "Command Does Not Contain Proper Delimiter.");
-		return NULL;
+		return 0;
 	}
 
 	if(current_command_type == C_COMMAND)
@@ -214,19 +230,17 @@ char *comp()
 			}
 		}
 		comp[i] = '\0';
-		return pcomp;
+		return 1;
 	}
 	i = find_line_num();
 	line_notification(i);
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return NULL;
+	return 0;
 }
 
-char *jump()
+int jump(char jump[])
 {
 	int i = 0;
-	char jump[MAXCOMMAND];
-	char *pjump = jump;
 	char *delimiter = NULL;
 	int valid_command = 0;
 	if(current_command_type == C_COMMAND)
@@ -238,7 +252,7 @@ char *jump()
 			if(*(current_command+i) == ';') { ++valid_command; }
 			++i;
 		}
-		if(valid_command == 0) { return NULL; } /* no jump in command */
+		if(valid_command == 0) { return 0; } /* no jump in command */
 		delimiter = strchr(current_command, ';');
 		++delimiter;
 		i = 0;
@@ -248,10 +262,10 @@ char *jump()
 			++i;
 		}
 		jump[i] = '\0';
-		return pjump;
+		return 1;
 	}
 	i = find_line_num();
 	line_notification(i);
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
-	return NULL;
+	return 0;
 }

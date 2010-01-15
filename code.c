@@ -1,6 +1,6 @@
-
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "code.h"
 #include "error.h"
@@ -11,12 +11,26 @@ int init_coder(const char *filename)
 	return 0;
 }
 
-int enc_dest(const char *mnemonic)
+int enc_symbol(const char mnemonic[])
 {
-	char command[MAXCOMMAND];
-	char *pcommand = command;
+	int value = 0;
+	int i = 0;
 
-	strcpy(pcommand, mnemonic);
+	value = strtol(mnemonic, NULL, 10);
+	value += 8;
+
+	for( i = 11; i >= 0; i--)
+   	{
+        	if( (1 << i) & value)
+			putchar('1');
+		else
+			putchar('0');
+   	}
+	return 0;
+}
+
+int enc_dest(const char mnemonic[])
+{
 
 	if(strcmp(mnemonic, "") == 0) {
 		printf("D000");
@@ -50,12 +64,12 @@ int enc_dest(const char *mnemonic)
 	return 0;
 }
 
-int enc_comp(const char *mnemonic)
+int enc_comp(const char mnemonic[])
 {
 	return 0;
 }
 
-int enc_jump(const char *mnemonic)
+int enc_jump(const char mnemonic[])
 {
 	char command[MAXCOMMAND];
 	char *pcommand = command;

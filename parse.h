@@ -24,6 +24,15 @@ void init_parser(char *FilenameBuff);
 */
 int find_line_num();
 
+/*
+* Search current command for term.
+* Ignores whitespace. Looks for one char only.
+*/
+int search_command(const char *current_command, const char term);
+
+/*
+* Print chars of current command to stdout.
+*/
 void print_current_command();
 
 /*
@@ -48,22 +57,22 @@ int command_type();
 * Returns symbol or decimal of current command
 * Should be called only when command_type() is A_COMMAND or L_COMMAND
 */
-char *symbol();
+int symbol(char sym[]);
 
 /*
 * Returns the dest mnemonic in the current C_COMMAND
 * Should be called only when command_type() is C_COMMAND
 */
-char *dest();
+int dest(char dest[]);
 
 /*
 * Returns comp mnemonic in the current C_COMMAND
 * Called only when command_type() is C_COMMAND
 */
-char *comp();
+int comp(char comp[]);
 
 /*
 * Returns the jump mnemonic in the current C_COMMAND
 * Called only when command_type() is C_COMMAND
 */
-char *jump();
+int jump(char jump[]);

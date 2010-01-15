@@ -9,8 +9,6 @@
 
 #define MAXOUTBUFF 10000
 
-/* char OutBuff[MAXINBUFF]; */
-
 int main(int argc, char *argv[])
 {
 	char FilenameBuff[80];
@@ -43,57 +41,36 @@ int main(int argc, char *argv[])
 
 	while(has_more_commands())
 	{
+		char sym[MAXCOMMAND];
+
 		advance();
 		printf("TYPE: %d ", command_type());
 		print_current_command();
 
+		if(command_type() == A_COMMAND || command_type() == L_COMMAND)
+		{
+			symbol(sym);
+			enc_symbol(sym);
+		}
+
 		if(command_type() == C_COMMAND)
 		{
-
-			char *destination = dest();
-			if(destination != NULL)
+			if(dest(sym) != 0)
 			{
-				enc_dest(destination);
-				/*
-				printf("DEST: ");
-				while(*destination != '\0')
-				{
-					printf("%c", *destination++);
-				}
-				printf(" ");
-				*/
+				enc_dest(sym);
+			}
+			
+			if(comp(sym) != 0)
+			{
+				enc_comp(sym);
 			}
 
-			char *comparison = comp();
-			if(comparison != NULL)
+			if(jump(sym) != 0)
 			{
-				enc_comp(comparison);
-				/*
-				printf("COMP: ");
-				while(*comparison != '\0')
-				{
-					printf("%c", *comparison++);
-				}
-				printf(" ");
-				*/
-			}
-
-			char *jumpsymbol = jump();
-			if(jumpsymbol != NULL)
-			{
-				enc_jump(jumpsymbol);
-				/*
-				printf("JUMP: ");
-				while(*jumpsymbol != '\0')
-				{
-					printf("%c", *jumpsymbol++);
-				}
-				printf(" ");
-				*/
+				enc_jump(sym);
 			}
 		}
 		printf("\n");
-		/* TODO: Add comp and jump here when implemented */
 	}
 	return 0;
 }
