@@ -55,7 +55,7 @@ int search_command(const char *current_command, const char term)
 void print_current_command()
 {
 	int i = 0;
-	printf("CURRENT COMMAND: ");
+	/* printf("CURRENT COMMAND: "); */
 	while(*(current_command+i) != '\r' && *(current_command+i) != '\n' && *(current_command+i) != '\0' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
@@ -252,7 +252,11 @@ int jump(char jump[])
 			if(*(current_command+i) == ';') { ++valid_command; }
 			++i;
 		}
-		if(valid_command == 0) { return 0; } /* no jump in command */
+		if(valid_command == 0)
+		{
+			jump[0] = '\0';
+			return 1;
+		} /* no jump in command */
 		delimiter = strchr(current_command, ';');
 		++delimiter;
 		i = 0;

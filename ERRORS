@@ -54,3 +54,35 @@ The errors are listed in order. Each error entry contains a detailed explanation
 	Code generator could not find appropriate output based on command input.
 	Accepted command input values include:
 		null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP
+
+12: Symbol Not Found In Encode Lookup Table.
+	Code generator could not find appropriate output based on command input.
+	Accepted command input values include:
+		0
+		1
+		-1
+		A
+		-A
+		!A
+		A-1
+		A+1
+		A-D
+		D
+		-D
+		!D
+		D-1
+		D+1
+		d-A
+		D|A
+		D&A
+		D+A
+		D|M
+		D-M
+		D&M
+		D+M
+		M
+		-M
+		!M
+		M-1
+		M+1
+		M-D

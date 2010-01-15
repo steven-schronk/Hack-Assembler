@@ -12,6 +12,11 @@ int init_coder(const char *filename);
 int enc_symbol(const char mnemonic[]);
 
 /*
+* Print default ones at beginning of C_COMMAND.
+*/
+void enc_start_c();
+
+/*
 * Returns binary code of the dest mnemonic
 */
 int enc_dest(const char mnemonic[]);

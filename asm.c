@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
 		char sym[MAXCOMMAND];
 
 		advance();
-		printf("TYPE: %d ", command_type());
-		print_current_command();
+		/* printf("TYPE: %d ", command_type()); */
+		/* print_current_command(); */
 
 		if(command_type() == A_COMMAND || command_type() == L_COMMAND)
 		{
@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 
 		if(command_type() == C_COMMAND)
 		{
+			enc_start_c();
 			if(dest(sym) != 0)
 			{
 				enc_dest(sym);
