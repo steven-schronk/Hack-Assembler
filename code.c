@@ -6,6 +6,8 @@
 #include "error.h"
 #include "parse.h"
 
+int current_symbol;
+
 int init_coder(const char *filename)
 {
 	return 0;
@@ -24,12 +26,18 @@ int enc_symbol(const char mnemonic[])
 		else
 			putchar('0');
    	}
+	current_symbol = value;
 	return 0;
 }
 
 void enc_start_c()
 {
-	printf("111X");
+	if(current_symbol == 1 || current_symbol == 0)
+	{
+		printf("1111");
+	} else {
+		printf("1110");
+	}
 }
 
 int enc_dest(const char mnemonic[])

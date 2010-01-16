@@ -55,7 +55,7 @@ int search_command(const char *current_command, const char term)
 void print_current_command()
 {
 	int i = 0;
-	/* printf("CURRENT COMMAND: "); */
+	printf("CURRENT COMMAND: ");
 	while(*(current_command+i) != '\r' && *(current_command+i) != '\n' && *(current_command+i) != '\0' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
@@ -172,8 +172,11 @@ int dest(char dest[])
 			if(*(current_command+i) == '=') { ++dest_exist; }
 			++i;
 		}
-		if(dest_exist == 0) { return 0; } /* no dest in command */
-
+		if(dest_exist == 0) /* no dest in command */
+		{
+			dest[0] = '\0';
+			return 1;
+		}
 		i = 0;
 		while(*(current_command+i) != '=')
 		{
