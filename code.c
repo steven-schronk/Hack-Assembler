@@ -6,8 +6,6 @@
 #include "error.h"
 #include "parse.h"
 
-int current_symbol;
-
 int init_coder(const char *filename)
 {
 	return 0;
@@ -26,18 +24,7 @@ int enc_symbol(const char mnemonic[])
 		else
 			putchar('0');
    	}
-	current_symbol = value;
 	return 0;
-}
-
-void enc_start_c()
-{
-	if(current_symbol == 1 || current_symbol == 0)
-	{
-		printf("1111");
-	} else {
-		printf("1110");
-	}
 }
 
 int enc_dest(const char mnemonic[])
@@ -68,8 +55,7 @@ int enc_dest(const char mnemonic[])
 		printf("111");
 		return 1;
 	} else {
-		int i = find_line_num();
-		line_notification(i);
+		line_notification(find_line_num());
 		exit_error(10, "Symbol Not Found In Dest Lookup Table.");
 	}
 	return 0;
@@ -77,105 +63,93 @@ int enc_dest(const char mnemonic[])
 
 int enc_comp(const char mnemonic[])
 {
-	int a = 0;
-	if(a == 0)
-	{
-		if(strcmp(mnemonic, "0") == 0) {
-			printf("101010");
-			return 1;
-		} else if(strcmp(mnemonic, "1") == 0) {
-			printf("111111");
-			return 1;
-		} else if(strcmp(mnemonic, "-1") == 0) {
-			printf("111010");
-			return 1;
-		} else if(strcmp(mnemonic, "D") == 0) {
-			printf("001100");
-			return 1;
-		} else if(strcmp(mnemonic, "A") == 0) {
-			printf("110000");
-			return 1;
-		} else if(strcmp(mnemonic, "!D") == 0) {
-			printf("001101");
-			return 1;
-		} else if(strcmp(mnemonic, "!A") == 0) {
-			printf("110001");
-			return 1;
-		} else if(strcmp(mnemonic, "-D") == 0) {
-			printf("001111");
-			return 1;
-		} else if(strcmp(mnemonic, "-A") == 0) {
-			printf("110011");
-			return 1;
-		} else if(strcmp(mnemonic, "D+1") == 0) {
-			printf("011111");
-			return 1;
-		} else if(strcmp(mnemonic, "A+1") == 0) {
-			printf("110111");
-			return 1;
-		} else if(strcmp(mnemonic, "D-1") == 0) {
-			printf("001110");
-			return 1;
-		} else if(strcmp(mnemonic, "A-1") == 0) {
-			printf("110010");
-			return 1;
-		} else if(strcmp(mnemonic, "D+A") == 0) {
-			printf("000010");
-			return 1;
-		} else if(strcmp(mnemonic, "D-A") == 0) {
-			printf("010011");
-			return 1;
-		} else if(strcmp(mnemonic, "A-D") == 0) {
-			printf("000111");
-			return 1;
-		} else if(strcmp(mnemonic, "D&A") == 0) {
-			printf("000000");
-			return 1;
-		} else if(strcmp(mnemonic, "D|A") == 0) {
-			printf("010101");
-			return 1;
-		} else if(strcmp(mnemonic, "M") == 0) {
-			printf("110000");
-			return 1;
-		} else if(strcmp(mnemonic, "!M") == 0) {
-			printf("110001");
-			return 1;
-		} else if(strcmp(mnemonic, "-M") == 0) {
-			printf("110011");
-			return 1;
-		} else if(strcmp(mnemonic, "M+1") == 0) {
-			printf("110111");
-			return 1;
-		} else if(strcmp(mnemonic, "M-1") == 0) {
-			printf("110010");
-			return 1;
-		} else if(strcmp(mnemonic, "D+M") == 0) {
-			printf("000010");
-			return 1;
-		} else if(strcmp(mnemonic, "D-M") == 0) {
-			printf("010011");
-			return 1;
-		} else if(strcmp(mnemonic, "M-D") == 0) {
-			printf("000111");
-			return 1;
-		} else if(strcmp(mnemonic, "D&M") == 0) {
-			printf("000000");
-			return 1;
-		} else if(strcmp(mnemonic, "D|M") == 0) {
-			printf("010101");
-			return 1;
-		} else {
-			int i = find_line_num();
-			line_notification(i);
-			exit_error(11, "Symbol Not Found In Encode Lookup Table.");
-		}
-
-	} else {
-
-
+	if(strcmp(mnemonic, "0") == 0) {
+		printf("1110101010");
+		return 1;
+	} else if(strcmp(mnemonic, "1") == 0) {
+		printf("1110111111");
+		return 1;
+	} else if(strcmp(mnemonic, "-1") == 0) {
+		printf("1110111010");
+		return 1;
+	} else if(strcmp(mnemonic, "D") == 0) {
+		printf("1110001100");
+		return 1;
+	} else if(strcmp(mnemonic, "A") == 0) {
+		printf("1110110000");
+		return 1;
+	} else if(strcmp(mnemonic, "!D") == 0) {
+		printf("1110001101");
+		return 1;
+	} else if(strcmp(mnemonic, "!A") == 0) {
+		printf("1110110001");
+		return 1;
+	} else if(strcmp(mnemonic, "-D") == 0) {
+		printf("1110001111");
+		return 1;
+	} else if(strcmp(mnemonic, "-A") == 0) {
+		printf("1110110011");
+		return 1;
+	} else if(strcmp(mnemonic, "D+1") == 0) {
+		printf("1110011111");
+		return 1;
+	} else if(strcmp(mnemonic, "A+1") == 0) {
+		printf("1110110111");
+		return 1;
+	} else if(strcmp(mnemonic, "D-1") == 0) {
+		printf("1110001110");
+		return 1;
+	} else if(strcmp(mnemonic, "A-1") == 0) {
+		printf("1110110010");
+		return 1;
+	} else if(strcmp(mnemonic, "D+A") == 0) {
+		printf("1110000010");
+		return 1;
+	} else if(strcmp(mnemonic, "D-A") == 0) {
+		printf("1110010011");
+		return 1;
+	} else if(strcmp(mnemonic, "A-D") == 0) {
+		printf("1110000111");
+		return 1;
+	} else if(strcmp(mnemonic, "D&A") == 0) {
+		printf("1110000000");
+		return 1;
+	} else if(strcmp(mnemonic, "D|A") == 0) {
+		printf("1110010101");
+		return 1;
+	} else if(strcmp(mnemonic, "M") == 0) {
+		printf("1111110000");
+		return 1;
+	} else if(strcmp(mnemonic, "!M") == 0) {
+		printf("1111110001");
+		return 1;
+	} else if(strcmp(mnemonic, "-M") == 0) {
+		printf("1111110011");
+		return 1;
+	} else if(strcmp(mnemonic, "M+1") == 0) {
+		printf("1111110111");
+		return 1;
+	} else if(strcmp(mnemonic, "M-1") == 0) {
+		printf("1111110010");
+		return 1;
+	} else if(strcmp(mnemonic, "D+M") == 0) {
+		printf("1111000010");
+		return 1;
+	} else if(strcmp(mnemonic, "D-M") == 0) {
+		printf("1111010011");
+		return 1;
+	} else if(strcmp(mnemonic, "M-D") == 0) {
+		printf("1111000111");
+		return 1;
+	} else if(strcmp(mnemonic, "D&M") == 0) {
+		printf("1111000000");
+		return 1;
+	} else if(strcmp(mnemonic, "D|M") == 0) {
+		printf("1111010101");
+		return 1;
 	}
-
-
+	line_notification(find_line_num());
+	exit_error(11, "Symbol Not Found In Encode Lookup Table.");
 	return 0;
 }
 

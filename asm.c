@@ -55,22 +55,9 @@ int main(int argc, char *argv[])
 
 		if(command_type() == C_COMMAND)
 		{
-			enc_start_c();
-
-			if(comp(sym) != 0)
-			{
-				enc_comp(sym);
-			}
-
-			if(dest(sym) != 0)
-			{
-				enc_dest(sym);
-			}
-			
-			if(jump(sym) != 0)
-			{
-				enc_jump(sym);
-			}
+			if(comp(sym) != 0) { enc_comp(sym); }
+			if(dest(sym) != 0) { enc_dest(sym); }
+			if(jump(sym) != 0) { enc_jump(sym); }
 		}
 		printf("\n");
 	}

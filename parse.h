@@ -1,6 +1,6 @@
 
 #define MAXCOMMAND 100
-#define MAXINBUFF 10000
+#define MAXINBUFF 250000
 
 /*
 * A_COMMAND: @value

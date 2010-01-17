@@ -81,7 +81,7 @@ void init_parser(char *FilenameBuff)
 
 	if(k < MAXINBUFF)
 	{
-		printf("Input Buffer Loaded\n");
+		/* printf("Input Buffer Loaded\n"); */
 	} else {
 		exit_error(4, "Input Too Large for Input Buffer");
 	}
@@ -90,8 +90,16 @@ void init_parser(char *FilenameBuff)
 int has_more_commands()
 {
 	int i = 0;
-	while(*(current_command+i) != '\0' && *(current_command+i) != '\n') { ++i; }
+	while(isprint(*(current_command+i))) { ++i; }
 	if(*(current_command+i) == '\0') { return 0; }
+	if(isspace(*(current_command+i)))
+	{
+		do {
+			++i;
+		} while (isspace(*(current_command+i)));
+		if(*(current_command+i) == '\0') { return 0; }
+	}
+
 	return 1;
 }
 
