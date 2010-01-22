@@ -3,9 +3,10 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "parse.h"
-#include "error.h"
 #include "code.h"
+#include "error.h"
+#include "parse.h"
+#include "symbol.h"
 
 #define MAXOUTBUFF 10000
 
@@ -61,5 +62,6 @@ int main(int argc, char *argv[])
 		}
 		printf("\n");
 	}
+
 	return 0;
 }

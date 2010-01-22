@@ -8,6 +8,7 @@
 
 int init_coder(const char *filename)
 {
+	/* TODO: Add code to open destination file. */
 	return 0;
 }
 

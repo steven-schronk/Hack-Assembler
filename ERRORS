@@ -24,7 +24,7 @@ The errors are listed in order. Each error entry contains a detailed explanation
 	If this buffer is found to be too small, it can be adjusted in the source and recompiled.
 
 5: Filename Extension Not Correct.
-	Assembler only accepts file extension "asm".  Uppercase letters will not work.
+	Assembler only accepts file extension "asm".  Uppercase letters in extension will not work.
 
 6: Cannot Open Output (Destination) File.
 	There are several factors that can cause this error:
@@ -33,7 +33,7 @@ The errors are listed in order. Each error entry contains a detailed explanation
 		C. File already exists but but is locked by either the operating system or another program.
 
 7: Incorrect Command Type.
-	Command at this line has not been observed as a valid command type.
+	Command at this line has been observed as an invalid command type.
 	This usually happens when the syntax for the file is incorrect.
 	See documentation for correct syntax for this assembly language.
 
@@ -86,3 +86,10 @@ The errors are listed in order. Each error entry contains a detailed explanation
 		M-1
 		M+1
 		M-D
+
+13: Symbol table full.
+	Error occurs when too many symbols have been listed in the Assembly code.
+	Two fixes are possible:
+		A. Re-compile code with larger (prime) hash table.
+		B. Reduce number of Symbols in current assembly program.
+	During normal use, this error should not occur.
