@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
 	FilenameBuff[i+1] = 'k';
 	FilenameBuff[i+2] = '\0';
 
+	load_symbols();
+
 	init_coder(FilenameBuff);
 
 	/* TODO: verify output buffer has not been overflowed */

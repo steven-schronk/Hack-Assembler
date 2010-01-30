@@ -1,6 +1,9 @@
 
 #define MAXCOMMAND 100
 #define MAXINBUFF 250000
+#define MAXSYMBOL 256
+
+#define pInBuff *(InBuff+i)
 
 /*
 * A_COMMAND: @value
@@ -76,3 +79,9 @@ int comp(char comp[]);
 * Called only when command_type() is C_COMMAND
 */
 int jump(char jump[]);
+
+/*
+* Evaluate full text of input file and find all symbols.
+* Load symbols into symbol_hash table.
+*/
+void load_symbols(void);

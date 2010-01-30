@@ -1,8 +1,9 @@
-#define HASH_SIZE 509
+/* Hash size must be a prime number. */
+#define HASH_SIZE 2039
 
 struct symbol_hash
 {
-	char *name;
+	char name[MAXSYMBOL];
 	int address;
 };
 
@@ -20,9 +21,10 @@ int hash(char symbol[]);
 
 /*
 * Adds pair (symbol, address) to the table.
+* If address is set to < 0, hash chooses address.
 * Returns 1 if entry added to table and 0 otherwise.
 */
-int add_entry(char symbol[]);
+int add_entry(char symbol[], int address);
 
 /*
 * Returns address associated with symbol.

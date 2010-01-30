@@ -14,7 +14,7 @@ void print_hash()
 	int i = 0;
 	while(i < HASH_SIZE)
 	{
-		if(symbol_hash[i].name != NULL)
+		if(symbol_hash[i].name[0] != '\0')
 		{
 			printf("HASH: %d->%d->%s\n", i, symbol_hash[i].address, symbol_hash[i].name);
 		}
@@ -35,17 +35,26 @@ int hash(char symbol[])
 	return hash;
 }
 
-int add_entry(char symbol[])
+int add_entry(char symbol[], int address)
 {
 	int i = 0;
 	int hash_val;
 	hash_val = hash(symbol);
-	if(symbol_hash[i].name == NULL)
+	if(symbol_hash[hash_val].name[0] == '\0')
 	{
-		symbol_hash[hash_val].name = symbol;
-		symbol_hash[hash_val].address = rom_address++;
+		printf("NEW SYMBOL %s\n", symbol);
+		strcpy(symbol_hash[hash_val].name, symbol);
+		if(address < 0)
+		{
+			symbol_hash[hash_val].address = rom_address++;
+		} else {
+			symbol_hash[hash_val].address = address;
+		}
 		return 1;
 	} else {
+		/* compare value of symbol here with input of function */
+		if(strcmp(symbol_hash[hash_val].name, symbol) == 0) { return 1; }
+		printf("Found Duplicate Hash Value\n");
 		do{ ++i; } while (symbol_hash[i].name != NULL && i < HASH_SIZE);
 		if( i == HASH_SIZE)
 		{
@@ -53,8 +62,13 @@ int add_entry(char symbol[])
 			line_notification(i);
 			exit_error(13, "Symbol table full");
 		}
-		symbol_hash[hash_val].name = symbol;
-		symbol_hash[hash_val].address = rom_address++;
+		strcpy(symbol_hash[hash_val].name, symbol);
+		if(address < 0)
+		{
+			symbol_hash[hash_val].address = rom_address++;
+		} else {
+			symbol_hash[hash_val].address = address;
+		}
 		return 1;
 	}
 	return 0;
