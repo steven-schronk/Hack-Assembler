@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
 			symbol_load();
 	}
 
-	print_hash();
 	init_coder(FilenameBuff);
 	reset_buffer();
 

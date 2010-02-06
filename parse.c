@@ -127,18 +127,15 @@ int command_type()
 	if(*current_command == '@')
 	{
 		current_command_type = A_COMMAND;
-		inc_ram_address();
 		return A_COMMAND;
 	} else if(search_command(current_command, '(') > 0 || search_command(current_command, ')') > 0) {
 		current_command_type = L_COMMAND;
 		return L_COMMAND;
 	} else if(!isdigit(*current_command)){
 		current_command_type = C_COMMAND;
-		inc_ram_address();
 		return C_COMMAND;
 	} else if(isdigit(*current_command)){
 		current_command_type = C_COMMAND;
-		inc_ram_address();
 		return C_COMMAND;
 	} else {
 		int i = find_line_num();
@@ -159,7 +156,7 @@ int symbol()
 
 	if(current_command_type == A_COMMAND)
 	{
-		if(convert == 0) /* lookup this symbol in hash table and get it's address */
+		if(convert == 0) /* text (symbolic) entries */
 		{
 			i = 0;
 			while(!isspace(*(current_command+i+1)))
@@ -169,14 +166,14 @@ int symbol()
 			}
 			sym[i++] = '\0';
 			address = get_address(sym);
-			if(address == -1)
+			if(address == 0)
 			{
 				address = get_ram_address();
-				add_entry(sym, address);
+				add_entry(sym,-1);
 			}
 			return address;
 
-		} else { /* convert numbers into integer and return current symbol as integer */
+		} else { /* numeric entries */
 			i = 0;
 			while(!isspace(*(current_command+i+1)))
 			{

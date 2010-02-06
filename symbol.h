@@ -8,13 +8,6 @@ struct symbol_hash
 };
 
 /*
-* Increments RAM Address value.
-* RAM Address used to store location of data tied to symbols.
-* This number corresponds to the location in RAM of this data value.
-*/
-void inc_ram_address();
-
-/*
 * Returns current value of RAM address.
 */
 int get_ram_address();

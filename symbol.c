@@ -8,13 +8,8 @@
 
 struct symbol_hash symbol_hash[HASH_SIZE];
 
-int ram_address = 17;
+int ram_address = 16;
 int rom_address = 0;
-
-void inc_ram_address()
-{
-	++ram_address;
-}
 
 void inc_rom_address()
 {
@@ -62,9 +57,8 @@ int add_entry(char symbol[], int address)
 	int i = 0;
 	int hash_val;
 	hash_val = hash(symbol);
-	if(symbol_hash[hash_val].name[0] == '\0')
+	if(symbol_hash[hash_val].name[0] == '\0') /* no entry at this location yet */
 	{
-		/* printf("NEW SYMBOL %s\n", symbol); */
 		strcpy(symbol_hash[hash_val].name, symbol);
 		if(address < 0)
 		{
@@ -73,10 +67,9 @@ int add_entry(char symbol[], int address)
 			symbol_hash[hash_val].address = address;
 		}
 		return 1;
-	} else {
+	} else { /* hash alreay used, move forward until we find an empty spot */
 		/* compare value of symbol here with input of function */
 		if(strcmp(symbol_hash[hash_val].name, symbol) == 0) { return 1; }
-		/* printf("Found Duplicate Hash Value\n"); */
 		do{ ++i; } while (symbol_hash[i].name != NULL && i < HASH_SIZE);
 		if( i == HASH_SIZE)
 		{
@@ -102,7 +95,6 @@ int get_address(char symbol[])
 	hash_val = hash(symbol);
 	if(symbol_hash[hash_val].name != NULL)
 	{
-		/* printf("Symbol Passed: %s -> Address Returned %d\n", symbol, symbol_hash[hash_val].address); */
 		return symbol_hash[hash_val].address;
 	} else {
 		/*
@@ -116,7 +108,6 @@ int get_address(char symbol[])
 		}
 		if(strcmp(symbol_hash[i].name, symbol) == 0)
 		{
-			/* printf("Symbol Passed: %s -> Address Returned %d\n", symbol, symbol_hash[hash_val].address); */
 			return symbol_hash[i].address;
 		}
 	}
