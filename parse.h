@@ -1,4 +1,3 @@
-
 #define MAXCOMMAND 100
 #define MAXINBUFF 250000
 #define MAXSYMBOL 256
@@ -19,6 +18,12 @@
 #define L_COMMAND 2
 
 void dump_buffer();
+
+/*
+* Resets command pointer to beginning of input buffer.
+*/
+void reset_buffer();
+
 void init_parser(char *FilenameBuff);
 
 /*
@@ -60,7 +65,12 @@ int command_type();
 * Returns symbol or decimal of current command
 * Should be called only when command_type() is A_COMMAND or L_COMMAND
 */
-int symbol(char sym[]);
+int symbol();
+
+/*
+* Reads command and finds symbol chars. Loads into hash
+*/
+int symbol_load();
 
 /*
 * Returns the dest mnemonic in the current C_COMMAND
@@ -79,9 +89,3 @@ int comp(char comp[]);
 * Called only when command_type() is C_COMMAND
 */
 int jump(char jump[]);
-
-/*
-* Evaluate full text of input file and find all symbols.
-* Load symbols into symbol_hash table.
-*/
-void load_symbols(void);

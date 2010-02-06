@@ -8,6 +8,25 @@ struct symbol_hash
 };
 
 /*
+* Increments RAM Address value.
+* RAM Address used to store location of data tied to symbols.
+* This number corresponds to the location in RAM of this data value.
+*/
+void inc_ram_address();
+
+/*
+* Increments ROM Address value.
+* ROM Address used to store location of instruction tied to symbols.
+* This number correponds to the instruction number of the "jump" instruction.
+*/
+void inc_rom_address();
+
+/*
+* Returns current value of ROM address.
+*/
+int get_rom_address();
+
+/*
 * Prints out hash.
 * Must pass hash pointer and length of hash array
 */

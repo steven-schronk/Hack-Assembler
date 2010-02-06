@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 {
 	char FilenameBuff[80];
 	register int i = 0;
+	int address = 0;
 
 	if(argc != 2) { exit_error(1, "No Input Files."); }
 	/* TODO: future versions will accept more than one file */
@@ -36,24 +37,55 @@ int main(int argc, char *argv[])
 	FilenameBuff[i+1] = 'k';
 	FilenameBuff[i+2] = '\0';
 
-	load_symbols();
+	/* load symbol table with pre-defined symbols */
+	add_entry("SP", 0);
+	add_entry("LCL", 1);
+	add_entry("ARG", 2);
+	add_entry("THIS", 3);
+	add_entry("THAT", 4);
+	add_entry("SCREEN", 16384);
+	add_entry("KBD", 24576);
 
+	add_entry("R0", 0);
+	add_entry("R1", 1);
+	add_entry("R2", 2);
+	add_entry("R3", 3);
+	add_entry("R4", 4);
+	add_entry("R5", 5);
+	add_entry("R6", 6);
+	add_entry("R7", 7);
+	add_entry("R8", 8);
+	add_entry("R9", 9);
+	add_entry("R10", 10);
+	add_entry("R11", 11);
+	add_entry("R12", 12);
+	add_entry("R13", 13);
+	add_entry("R14", 14);
+	add_entry("R15", 15);
+
+	while(has_more_commands())
+	{
+		advance();
+		if(command_type() == A_COMMAND || command_type() == C_COMMAND)
+			inc_rom_address();
+		if(command_type() == L_COMMAND)
+			symbol_load();
+	}
+
+	print_hash();
 	init_coder(FilenameBuff);
-
-	/* TODO: verify output buffer has not been overflowed */
+	reset_buffer();
 
 	while(has_more_commands())
 	{
 		char sym[MAXCOMMAND];
 
 		advance();
-		/* printf("TYPE: %d ", command_type()); */
-		/* print_current_command(); */
 
 		if(command_type() == A_COMMAND || command_type() == L_COMMAND)
 		{
-			symbol(sym);
-			enc_symbol(sym);
+			address = symbol(sym);
+			enc_symbol(address);
 		}
 
 		if(command_type() == C_COMMAND)

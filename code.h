@@ -9,7 +9,7 @@ int init_coder(const char *filename);
 * mnemonic is array of chars with A_COMMAND or L_COMMAND.
 * code array will be modified to binary chars of command.
 */
-int enc_symbol(const char mnemonic[]);
+void enc_symbol(int number);
 
 /*
 * Returns binary code of the dest mnemonic

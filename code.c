@@ -12,20 +12,17 @@ int init_coder(const char *filename)
 	return 0;
 }
 
-int enc_symbol(const char mnemonic[])
+void enc_symbol(int number)
 {
-	int value = 0;
-	int i = 0;
+	int i, j;
+	i = j = 0;
 
-	value = strtol(mnemonic, NULL, 10);
-	for( i = 15; i >= 0; i--)
-   	{
-        	if( (1 << i) & value)
-			putchar('1');
-		else
-			putchar('0');
-   	}
-	return 0;
+	for(j = 15; j >= 0; j--)
+	{
+		i = number / (1 << j);
+		number = number - i * (1 << j);
+		printf("%d", i);
+ 	}
 }
 
 int enc_dest(const char mnemonic[])

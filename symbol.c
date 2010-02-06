@@ -7,7 +7,24 @@
 #include "symbol.h"
 
 struct symbol_hash symbol_hash[HASH_SIZE];
+
+int ram_address = 17;
 int rom_address = 0;
+
+void inc_ram_address()
+{
+	++ram_address;
+}
+
+void inc_rom_address()
+{
+	++rom_address;
+}
+
+int get_rom_address()
+{
+	return rom_address;
+}
 
 void print_hash()
 {
@@ -42,11 +59,11 @@ int add_entry(char symbol[], int address)
 	hash_val = hash(symbol);
 	if(symbol_hash[hash_val].name[0] == '\0')
 	{
-		printf("NEW SYMBOL %s\n", symbol);
+		/* printf("NEW SYMBOL %s\n", symbol); */
 		strcpy(symbol_hash[hash_val].name, symbol);
 		if(address < 0)
 		{
-			symbol_hash[hash_val].address = rom_address++;
+			symbol_hash[hash_val].address = ram_address++;
 		} else {
 			symbol_hash[hash_val].address = address;
 		}
@@ -54,7 +71,7 @@ int add_entry(char symbol[], int address)
 	} else {
 		/* compare value of symbol here with input of function */
 		if(strcmp(symbol_hash[hash_val].name, symbol) == 0) { return 1; }
-		printf("Found Duplicate Hash Value\n");
+		/* printf("Found Duplicate Hash Value\n"); */
 		do{ ++i; } while (symbol_hash[i].name != NULL && i < HASH_SIZE);
 		if( i == HASH_SIZE)
 		{
@@ -65,7 +82,7 @@ int add_entry(char symbol[], int address)
 		strcpy(symbol_hash[hash_val].name, symbol);
 		if(address < 0)
 		{
-			symbol_hash[hash_val].address = rom_address++;
+			symbol_hash[hash_val].address = ram_address++;
 		} else {
 			symbol_hash[hash_val].address = address;
 		}
@@ -80,7 +97,8 @@ int get_address(char symbol[])
 	hash_val = hash(symbol);
 	if(symbol_hash[hash_val].name != NULL)
 	{
-		return hash_val;
+		/* printf("Symbol Passed: %s -> Address Returned %d\n", symbol, symbol_hash[hash_val].address); */
+		return symbol_hash[hash_val].address;
 	} else {
 		/*
 		could not find hash -- loop through strings
@@ -93,7 +111,8 @@ int get_address(char symbol[])
 		}
 		if(strcmp(symbol_hash[i].name, symbol) == 0)
 		{
-			return i;
+			/* printf("Symbol Passed: %s -> Address Returned %d\n", symbol, symbol_hash[hash_val].address); */
+			return symbol_hash[i].address;
 		}
 	}
 	return -1;

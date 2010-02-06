@@ -29,6 +29,11 @@ void dump_buffer()
 	printf("\n");
 }
 
+void reset_buffer()
+{
+	current_command = InBuff;
+}
+
 int find_line_num()
 {
 	int i = 1;
@@ -122,15 +127,18 @@ int command_type()
 	if(*current_command == '@')
 	{
 		current_command_type = A_COMMAND;
+		inc_ram_address();
 		return A_COMMAND;
 	} else if(search_command(current_command, '(') > 0 || search_command(current_command, ')') > 0) {
 		current_command_type = L_COMMAND;
 		return L_COMMAND;
 	} else if(!isdigit(*current_command)){
 		current_command_type = C_COMMAND;
+		inc_ram_address();
 		return C_COMMAND;
 	} else if(isdigit(*current_command)){
 		current_command_type = C_COMMAND;
+		inc_ram_address();
 		return C_COMMAND;
 	} else {
 		int i = find_line_num();
@@ -140,32 +148,81 @@ int command_type()
 	}
 }
 
-int symbol(char sym[])
+int symbol()
 {
-	int i = 0;
+	int convert = 0, i = 0;
+	char sym[MAXSYMBOL];
+
+	/* determine if this is a symbol or an address */
+	convert = isdigit(*(current_command+1));
 
 	if(current_command_type == A_COMMAND)
 	{
-		while(!isspace(*(current_command+i+1)))
+		if(convert == 0)
 		{
-			sym[i] = *(current_command+i+1);
-			++i;
+			/* lookup this symbol in hash table and get it's address */
+			i = 0;
+			while(!isspace(*(current_command+i+1)))
+			{
+				sym[i] = *(current_command+i+1);
+				++i;
+			}
+			sym[i++] = '\0';
+			return get_address(sym);
+		} else {
+			/* convert numbers into integer and return current symbol as integer */
+			i = 0;
+			while(!isspace(*(current_command+i+1)))
+			{
+				sym[i] = *(current_command+i+1);
+				++i;
+			}
+			sym[i++] = '\0';
+			/* convert string into an int for return */
+			return (int)strtol(sym, (char **) NULL, 10);
 		}
-		sym[i++] = '\0';
-		return 1;
 	}
 
 	if(current_command_type == L_COMMAND)
 	{
-		while(!isspace(*(current_command+i+1)) && *(current_command+i+1) != ')')
+		if(convert == 0)
 		{
-			sym[i] = *(current_command+i+1);
-			++i;
+			/* lookup this symbol in hash table and get it's address */
+			i = 0;
+			while(!isspace(*(current_command+i+1)) && *(current_command+i+1) != ')')
+			{
+				sym[i] = *(current_command+i+1);
+				++i;
+			}
+			sym[i++] = '\0';
+			return get_address(sym);
+		} else {
+			/* convert numbers into integer and return current symbol as integer */
+			i = 0;
+			while(!isspace(*(current_command+i+1)) && *(current_command+i+1) != ')')
+			{
+				sym[i] = *(current_command+i+1);
+				++i;
+			}
+			sym[i++] = '\0';
+			return (int)strtol(sym, (char **) NULL, 10);
 		}
-		sym[i++] = '\0';
-		return 1;
 	}
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
+	return 0;
+}
+
+int symbol_load()
+{
+	char sym[MAXCOMMAND];
+	int i = 0;
+	while(!isspace(*(current_command+i+1)) && *(current_command+i+1) != ')')
+	{
+		sym[i] = *(current_command+i+1);
+		++i;
+	}
+	sym[i++] = '\0';
+	add_entry(sym, get_rom_address());
 	return 0;
 }
 
@@ -284,65 +341,4 @@ int jump(char jump[])
 	line_notification(i);
 	exit_error(8, "Symbol Function Called on Incorrect Command Type.");
 	return 0;
-}
-
-void load_symbols()
-{
-	int i = 0, j = 0;
-	char symbol_buff[MAXSYMBOL];
-	/* load symbol table with pre-defined symbols */
-	add_entry("SP", 0);
-	add_entry("LCL", 1);
-	add_entry("ARG", 2);
-	add_entry("THIS", 3);
-	add_entry("THAT", 4);
-	add_entry("SCREEN", 16384);
-	add_entry("KBD", 24576);
-
-	add_entry("R0", 0);
-	add_entry("R1", 1);
-	add_entry("R2", 2);
-	add_entry("R3", 3);
-	add_entry("R4", 4);
-	add_entry("R5", 5);
-	add_entry("R6", 6);
-	add_entry("R7", 7);
-	add_entry("R8", 8);
-	add_entry("R9", 9);
-	add_entry("R10", 10);
-	add_entry("R11", 11);
-	add_entry("R12", 12);
-	add_entry("R13", 13);
-	add_entry("R14", 14);
-	add_entry("R15", 15);
-
-	/* symbol check:
-		starts with @ and next char is not a number
-		starts with ( and next char is not a number
-	*/
-
-	while(pInBuff != '\0')
-	{
-		if(pInBuff == '@' || pInBuff == '(')
-		{
-			++i;
-			if(!isdigit(pInBuff))
-			{
-				/* printf("SYMBOL_START: %c\n", pInBuff); */
-				j = 0;
-				while(!isspace(pInBuff) && pInBuff != '\0' && pInBuff != ')')
-				{
-					symbol_buff[j] = pInBuff;
-					++i;
-					++j;
-				}
-				symbol_buff[j++] = '\0';
-				/* printf("Symbol Found: %s\n", symbol_buff); */
-				add_entry(symbol_buff, -1);
-				print_hash(); printf("---------\n");
-			}
-		}
-		++i;
-	}
-	print_hash();
 }
