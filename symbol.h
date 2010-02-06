@@ -15,6 +15,11 @@ struct symbol_hash
 void inc_ram_address();
 
 /*
+* Returns current value of RAM address.
+*/
+int get_ram_address();
+
+/*
 * Increments ROM Address value.
 * ROM Address used to store location of instruction tied to symbols.
 * This number correponds to the instruction number of the "jump" instruction.

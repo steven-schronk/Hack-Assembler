@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 		if(command_type() == A_COMMAND || command_type() == L_COMMAND)
 		{
 			address = symbol(sym);
-			enc_symbol(address);
+			if(command_type() == A_COMMAND) { enc_symbol(address); }
 		}
 
 		if(command_type() == C_COMMAND)
@@ -94,8 +94,8 @@ int main(int argc, char *argv[])
 			if(dest(sym) != 0) { enc_dest(sym); }
 			if(jump(sym) != 0) { enc_jump(sym); }
 		}
-		printf("\n");
-	}
+		if(command_type() != L_COMMAND) { printf("\n"); }
+ 	}
 
 	return 0;
 }

@@ -26,6 +26,11 @@ int get_rom_address()
 	return rom_address;
 }
 
+int get_ram_address()
+{
+	return ram_address;
+}
+
 void print_hash()
 {
 	int i = 0;

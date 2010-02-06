@@ -151,6 +151,7 @@ int command_type()
 int symbol()
 {
 	int convert = 0, i = 0;
+	int address = 0;
 	char sym[MAXSYMBOL];
 
 	/* determine if this is a symbol or an address */
@@ -158,9 +159,8 @@ int symbol()
 
 	if(current_command_type == A_COMMAND)
 	{
-		if(convert == 0)
+		if(convert == 0) /* lookup this symbol in hash table and get it's address */
 		{
-			/* lookup this symbol in hash table and get it's address */
 			i = 0;
 			while(!isspace(*(current_command+i+1)))
 			{
@@ -168,9 +168,15 @@ int symbol()
 				++i;
 			}
 			sym[i++] = '\0';
-			return get_address(sym);
-		} else {
-			/* convert numbers into integer and return current symbol as integer */
+			address = get_address(sym);
+			if(address == -1)
+			{
+				address = get_ram_address();
+				add_entry(sym, address);
+			}
+			return address;
+
+		} else { /* convert numbers into integer and return current symbol as integer */
 			i = 0;
 			while(!isspace(*(current_command+i+1)))
 			{
@@ -178,11 +184,15 @@ int symbol()
 				++i;
 			}
 			sym[i++] = '\0';
-			/* convert string into an int for return */
-			return (int)strtol(sym, (char **) NULL, 10);
+			/* value looks like a string of chars must be converted */
+			address = (int)strtol(sym, (char **) NULL, 10);
+			return address;
 		}
 	}
 
+	/* TODO:  THIS MUST BE CHANGED TO LOOK IN HASH FOR THIS SYMBOL
+		BY NOW IT HAS ALREADY BEEN ADDED TO THE HASH TABLE
+	*/
 	if(current_command_type == L_COMMAND)
 	{
 		if(convert == 0)
