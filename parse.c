@@ -7,7 +7,6 @@
 #include "error.h"
 #include "symbol.h"
 
-FILE *pOutfile;
 FILE *pInfile;
 
 char InBuff[MAXINBUFF];

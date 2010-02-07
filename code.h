@@ -5,6 +5,11 @@
 int init_coder(const char *filename);
 
 /*
+* Adds newline to end of output file.
+*/
+void advance_ouptut_file();
+
+/*
 * Returns binary code of A_COMMAND and L_COMMAND
 * mnemonic is array of chars with A_COMMAND or L_COMMAND.
 * code array will be modified to binary chars of command.

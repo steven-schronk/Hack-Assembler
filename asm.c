@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 			if(dest(sym) != 0) { enc_dest(sym); }
 			if(jump(sym) != 0) { enc_jump(sym); }
 		}
-		if(command_type() != L_COMMAND) { printf("\n"); }
+		if(command_type() != L_COMMAND) { advance_ouptut_file(); }
  	}
 
 	return 0;
