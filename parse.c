@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "asm.h"
 #include "parse.h"
 #include "error.h"
 #include "symbol.h"
@@ -60,20 +61,16 @@ int search_command(const char *current_command, const char term)
 void print_current_command()
 {
 	int i = 0;
-	printf("CURRENT COMMAND: ");
 	while(*(current_command+i) != '\r' && *(current_command+i) != '\n' && *(current_command+i) != '\0' && i <= 20)
 	{
 		printf("%c", *(current_command+i));
 		++i;
 	}
-	printf("\n");
+	if(settings.code != 0 || settings.comments != 0) { printf("\n"); }
 }
 
 void init_parser(char *FilenameBuff)
 {
-	/*if((pOutfile = fopen(FilenameBuff, "w")) == NULL)
-		exit_error(6, "Cannot Open Output (Destination) File"); */
-
 	if((pInfile = fopen(FilenameBuff, "rb")) == NULL)
 		exit_error(3, "Cannot Open Input (Source) File");
 

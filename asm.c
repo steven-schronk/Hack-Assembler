@@ -1,8 +1,9 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 
+#include "asm.h"
 #include "code.h"
 #include "error.h"
 #include "parse.h"
@@ -10,25 +11,91 @@
 
 #define MAXOUTBUFF 10000
 
+struct settings settings;
+
+void usage(void)
+{
+	printf("\n<options> <file>\n");
+	printf("<file>	Filename to assemble.\n");
+	printf("	Filename must end with .asm.\n");
+	printf("-C 	Print code output to stdout - with comments.\n");
+	printf("-c	Print code output to stdout - without comments.\n");
+	printf("-t	Print final hash table to stdout.\n");
+	printf("-v	Verbose output to stdout.\n");
+	printf("-x	Print commands to stdout.\n\n");
+}
+
+static void settings_init(void)
+{
+	settings.verbose = 0;
+	settings.verbose = 0;
+	settings.hash = 0;
+	settings.code = 0;
+	settings.comments = 0;
+	settings.commands = 0;
+}
+
 int main(int argc, char *argv[])
 {
 	char FilenameBuff[80];
 	register int i = 0;
 	int address = 0;
+	int c;
 
-	if(argc != 2) { exit_error(1, "No Input Files."); }
+	settings_init();
+
+	if(argc <2) { usage(); return 0;}
+
+	while(-1 != (c = getopt(argc, argv,
+		"-v" /* verbose output to stdout */
+		"-t" /* print final hash table to stdout */
+		"-c" /* print code output to stdout - without comments */
+		"-C" /* print code output to stdout - with comments */
+		"-x" /* print commands to stdout */
+		"--help" /*print out usage statement */
+	))) {
+
+		switch (c)
+		{
+			case 'v':
+				settings.verbose = 1;
+				settings.hash = 1;
+				settings.code = 1;
+				settings.comments = 1;
+				settings.commands = 1;
+				break;
+			case 't':
+				settings.hash = 1;
+				break;
+			case 'c':
+				settings.code = 1;
+				break;
+			case 'C':
+				settings.code = 1;
+				settings.comments = 1;
+				break;
+			case 'x':
+				settings.commands = 1;
+				break;
+		}
+	}
+
+	/* find path location */
+	if(argv[1][0] == '-') { c = 2; } else { c = 1; }
+
+	if(argc < 2) { exit_error(1, "No Input Files."); usage(); }
 	/* TODO: future versions will accept more than one file */
-	if(argc > 2) { exit_error(2, "Too Many Files Listed."); }
+	if(argc > 3) { exit_error(2, "Too Many Files Listed."); usage(); }
 
-	strcpy(FilenameBuff, argv[1]);
+	strcpy(FilenameBuff, argv[c]);
 
 	/* verify filename extension */
-	i = strlen(argv[1]) - 1;
-	if(	(argv[1][i-2] != 'a') ||
-		(argv[1][i-1] != 's') ||
-		(argv[1][i]   != 'm' ) ) { exit_error(5, "Filename Extension Not Correct."); }
+	i = strlen(argv[c]) - 1;
+	if(	(argv[c][i-2] != 'a') ||
+		(argv[c][i-1] != 's') ||
+		(argv[c][i]   != 'm' ) ) { exit_error(5, "Filename Extension Not Correct."); usage(); }
 
-	init_parser(argv[1]);
+	init_parser(FilenameBuff);
 
 	/* modify filename to output filename and then open file */
 	FilenameBuff[i-2] = 'h';
@@ -80,7 +147,6 @@ int main(int argc, char *argv[])
 		char sym[MAXCOMMAND];
 
 		advance();
-
 		if(command_type() == A_COMMAND || command_type() == L_COMMAND)
 		{
 			address = symbol(sym);
@@ -93,8 +159,21 @@ int main(int argc, char *argv[])
 			if(dest(sym) != 0) { enc_dest(sym); }
 			if(jump(sym) != 0) { enc_jump(sym); }
 		}
-		if(command_type() != L_COMMAND) { advance_ouptut_file(); }
+		if(command_type() != L_COMMAND)
+		{
+			advance_ouptut_file();
+			if(settings.code != 0 || settings.comments != 0 ) { printf(" "); }
+		} else {
+			if(settings.code != 0 || settings.comments != 0)
+			{
+				printf("                 ");
+			}
+		}
+
+		if(settings.commands != 0) { print_current_command(); }
+		if(settings.code == 0 || settings.comments == 0) { printf("\n"); }
  	}
 
+	if(settings.hash != 0) { print_hash(); }
 	return 0;
 }

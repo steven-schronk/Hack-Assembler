@@ -1,9 +1,30 @@
-#include "asm.c"
+struct settings
+{
+	int verbose;
+	int hash;
+	int code;
+	int comments;
+	int commands;
+};
+
+extern struct settings settings;
+
+/*
+* Display usage info for the user.
+*/
+void usage(void);
+
+/*
+* Apply command line settings (arguments) to the settings struct.
+* These settings are generally universally applicable to the program.
+* Therefore, they are stored and maintained in the settings.
+*/
+static void settings_init(void);
 
 /*
 * Helper function to view contents of buffer when needed.
 */
-void dump_buffer(const char *buffer);
+void dump_buffer(void);
 
 /*
 * Display Errors to user as needed.
@@ -14,13 +35,4 @@ void dump_buffer(const char *buffer);
 */
 void exit_error(const int err_num, const char *err_msg);
 
-/*
-* Display Warnings about assembler status as needed.
-*
-* These are messages to the user that contain both an error number
-* as well as simple description of what went wrong.
-* 
-* Error number corresponds to number listed in documentation.
-*
-*/
-int warning_error(const int err_num, const char *err_msg);
+
