@@ -56,7 +56,6 @@ int hash(char symbol[])
 
 int add_entry(char symbol[], int address)
 {
-	int i = 0;
 	int hash_val;
 	hash_val = hash(symbol);
 	if(symbol_hash[hash_val].name[0] == '\0') /* no entry at this location yet */
@@ -69,26 +68,46 @@ int add_entry(char symbol[], int address)
 			symbol_hash[hash_val].address = address;
 		}
 		return 1;
-	} else { /* hash alreay used, move forward until we find an empty spot */
+	} else { /* hash alreay used */
+
 		/* compare value of symbol here with input of function */
+		/* this could be a repeat hash */
 		if(strcmp(symbol_hash[hash_val].name, symbol) == 0) { return 1; }
-		do{ ++i; } while (symbol_hash[i].name != NULL && i < HASH_SIZE);
-		if( i == HASH_SIZE)
+
+		if(next_hash_space() != -1)
 		{
+			strcpy(symbol_hash[hash_val].name, symbol);
+			if(address < 0)
+			{
+				symbol_hash[hash_val].address = ram_address++;
+			} else {
+				symbol_hash[hash_val].address = address;
+			}
+			return 1;
+		} else {
+			print_hash();
 			int i = find_line_num();
 			line_notification(i);
 			exit_error(13, "Symbol table full");
 		}
-		strcpy(symbol_hash[hash_val].name, symbol);
-		if(address < 0)
-		{
-			symbol_hash[hash_val].address = ram_address++;
-		} else {
-			symbol_hash[hash_val].address = address;
-		}
-		return 1;
 	}
 	return 0;
+}
+
+int next_hash_space()
+{
+	int i = -1;
+	do
+	{
+		++i;
+	} while (symbol_hash[i].name[0] != '\0' && i < HASH_SIZE);
+
+	if(symbol_hash[i].name[0] == '\0')
+	{
+		return i;
+	} else {
+		return -1;
+	}
 }
 
 int get_address(char symbol[])

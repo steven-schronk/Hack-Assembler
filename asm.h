@@ -19,7 +19,7 @@ void usage(void);
 * These settings are generally universally applicable to the program.
 * Therefore, they are stored and maintained in the settings.
 */
-static void settings_init(void);
+void settings_init(void);
 
 /*
 * Helper function to view contents of buffer when needed.

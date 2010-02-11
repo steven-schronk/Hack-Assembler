@@ -1,5 +1,5 @@
 /* Hash size must be a prime number. */
-#define HASH_SIZE 2039
+#define HASH_SIZE 104729
 
 struct symbol_hash
 {
@@ -42,6 +42,13 @@ int hash(char symbol[]);
 * Returns 1 if entry added to table and 0 otherwise.
 */
 int add_entry(char symbol[], int address);
+
+/*
+* Look from beginning of hash for an empty slot and return it's address
+* This should be used only when a hash collision occurs as there is a
+* performance penalty for finding this value later.
+*/
+int next_hash_space(void);
 
 /*
 * Returns address associated with symbol.

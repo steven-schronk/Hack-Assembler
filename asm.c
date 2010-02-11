@@ -25,7 +25,7 @@ void usage(void)
 	printf("-x	Print commands to stdout.\n\n");
 }
 
-static void settings_init(void)
+void settings_init(void)
 {
 	settings.verbose = 0;
 	settings.verbose = 0;
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 		}
 
 		if(settings.commands != 0) { print_current_command(); }
-		if(settings.code == 0 || settings.comments == 0) { printf("\n"); }
+		if((settings.code == 0 || settings.comments == 0) && argc > 2) { printf("\n"); }
  	}
 
 	if(settings.hash != 0) { print_hash(); }
